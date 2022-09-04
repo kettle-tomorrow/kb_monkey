@@ -7,6 +7,17 @@ import (
 	"kb_monkey/token"
 )
 
+const (
+	_int = iota
+	LOWEST
+	EQUAL       // ==
+	LESSGREATER // > または <
+	SUM         // +
+	PRODUCT     // *
+	PREFIX      // -X または !X
+	CALL        // myfunction(x)
+)
+
 type Parser struct {
 	l *lexer.Lexer
 
@@ -24,6 +35,9 @@ func New(l *lexer.Lexer) *Parser {
 
 	p.nextToken()
 	p.nextToken()
+
+	p.prefixParseFns = make(map[token.TokenType]prefixParseFn)
+	p.registerPrefix(token.IDENT, p.parseIdentifier)
 
 	return p
 }
@@ -140,4 +154,17 @@ func (p *Parser) parseExpressionStatement() *ast.ExpressionStatement {
 		p.nextToken()
 	}
 	return stmt
+}
+
+func (p *Parser) parseExpression(precedent int) ast.Expression {
+	prefix := p.prefixParseFns[p.curToken.Type]
+	if prefix == nil {
+		return nil
+	}
+	leftExp := prefix()
+	return leftExp
+}
+
+func (p *Parser) parseIdentifier() ast.Expression {
+	return &ast.Identifier{Token: p.curToken, Value: p.curToken.Literal}
 }
