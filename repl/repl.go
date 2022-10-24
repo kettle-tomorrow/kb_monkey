@@ -15,7 +15,7 @@ func Start(in io.Reader, out io.Writer) {
 	scanner := bufio.NewScanner(in)
 
 	for {
-		fmt.Println(PROMPT)
+		fmt.Print(PROMPT)
 
 		// 入力待機
 		scanned := scanner.Scan()
