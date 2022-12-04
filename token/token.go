@@ -11,8 +11,9 @@ const (
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
 
-	IDENT = "IDENT" // 識別子: add, foobar, x, y
-	INT   = "INT"   // リテラル: 123456
+	IDENT  = "IDENT"  // 識別子: add, foobar, x, y
+	INT    = "INT"    // リテラル: 123456
+	STRING = "STRING" // リテラル: "hello world"
 
 	// 演算子
 	ASSIGN   = "="
